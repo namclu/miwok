@@ -1,22 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
+              android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_miwok"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/iv_icon_placeholder"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        tools:text="lutti"/>
+        android:padding="8dp"
+        android:src="@mipmap/ic_launcher"/>
 
-    <TextView
-        android:id="@+id/tv_default"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        tools:text="one"/>
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_miwok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="8dp"
+            tools:text="lutti"/>
+
+        <TextView
+            android:id="@+id/tv_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            tools:text="one"/>
+
+    </LinearLayout>
+
 </LinearLayout>
