@@ -25,13 +25,12 @@
     <ImageView
         android:id="@+id/iv_image"
         android:layout_width="@dimen/list_item_height"
-        android:layout_height="@dimen/list_item_height" />
+        android:layout_height="@dimen/list_item_height"/>
 
     <LinearLayout
         android:id="@+id/ll_text_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/category_numbers"
         android:orientation="vertical"
         android:paddingLeft="16dp">
 

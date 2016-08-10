@@ -15,6 +15,9 @@ import java.util.ArrayList;
  */
 public class WordAdapter extends ArrayAdapter<Word> {
 
+    // Resource ID to set the background color for list of words
+    private int colorResId;
+
     /**
      * This is our own custom constructor (it doesn't mirror a superclass constructor).
      * The context is used to inflate the layout file, and the list is the data we want
@@ -22,13 +25,15 @@ public class WordAdapter extends ArrayAdapter<Word> {
      *
      * @param context The current context. Used to inflate the layout file.
      * @param words  A List of word objects to display in a list
+     * @param colorResId A resource ID used to set the background color
      */
-    public WordAdapter(Activity context, ArrayList<Word> words){
+    public WordAdapter(Activity context, ArrayList<Word> words, int colorResId){
         // We initialize the ArrayAdapter's internal storage for the context and the list.
         // The second argument is used when the ArrayAdapter is populating a single TextView.
         // Because this is a custom adapter for two TextViews, the adapter is not
         // going to use this second argument, so it can be any value. Here, we used 0.
         super(context, 0, words);
+        this.colorResId = colorResId;
     }
 
     /**
@@ -76,6 +81,11 @@ public class WordAdapter extends ArrayAdapter<Word> {
         }else {
             imageView.setVisibility(View.GONE);
         }
+
+        // Set theme color for list item
+        View textContainer = listItemView.findViewById(R.id.ll_text_container);
+        // Set background color for list item
+        textContainer.setBackgroundResource(colorResId);
 
         // Return the whole list item layout (containing 2 TextViews)
         // so that it can be shown in the ListView
