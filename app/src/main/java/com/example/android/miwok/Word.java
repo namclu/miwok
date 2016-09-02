@@ -13,9 +13,13 @@ public class Word {
 
     // Used to indicate if an imageResId was assigned with a valid image ID or not
     private static final int NO_IMAGE = -1;
+    private static final int NO_AUDIO = -2;
 
     // Retrieves a resource ID for image
     private int imageResId = NO_IMAGE;
+
+    // Resource ID for audio
+    private int audioResId = NO_AUDIO;
 
     /*
     * Creates a new Word object
@@ -23,24 +27,28 @@ public class Word {
     * @param defaultTranslation is the word in a language that use is familiar with,
     *   in this case English
     * @param miwokTranslation is the word in the Miwok language
+    * @param audioResId is the audio resource ID associated with this word
     */
-    public Word(String defaultTranslation, String miwokTranslation) {
+    public Word(String defaultTranslation, String miwokTranslation, int audioResID) {
         this.defaultTranslation = defaultTranslation;
         this.miwokTranslation = miwokTranslation;
+        this.audioResId = audioResID;
     }
 
     /*
-    * Creates a new Word object w/ image
+    * Creates a new Word object w/ image and audio
     *
     * @param defaultTranslation is the word in a language that use is familiar with,
     *   in this case English
     * @param miwokTranslation is the word in the Miwok language
     * @param imageResID is the resource ID for the image asset
+    * @param audioResId is the audio resource ID associated with this word
     */
-    public Word(String defaultTranslation, String miwokTranslation, int imageResID) {
+    public Word(String defaultTranslation, String miwokTranslation, int imageResId, int audioResId) {
         this.defaultTranslation = defaultTranslation;
         this.miwokTranslation = miwokTranslation;
-        this.imageResId = imageResID;
+        this.imageResId = imageResId;
+        this.audioResId = audioResId;
     }
 
     /*
@@ -62,4 +70,7 @@ public class Word {
         return imageResId != NO_IMAGE;
     }
 
+    public int getAudioResId() {
+        return audioResId;
+    }
 }
