@@ -95,6 +95,15 @@ public class FamilyActivity extends AppCompatActivity {
         });
     }
 
+    /*
+     * Upon onStop(), release the MediaPlayer resources
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        releaseMediaPlayer();
+    }
+
     /**
      * Clean up the media player by releasing its resources.
      */
