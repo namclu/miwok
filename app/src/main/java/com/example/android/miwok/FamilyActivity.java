@@ -15,6 +15,8 @@
  */
 package com.example.android.miwok;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,8 +28,13 @@ import java.util.ArrayList;
 
 public class FamilyActivity extends AppCompatActivity {
 
-    // Create MediaPlayer object
+    /*
+     * @param mediaPlayer Create a MediaPlayer object
+     * @param audioManager Handles audio focus when playing a sound file
+     */
     private MediaPlayer mediaPlayer;
+    private AudioManager audioManager;
+
 
     // Create OnCompletionListener object that can be used throughout
     // This listener is triggered when MediaPlayer has completed playing a song
@@ -39,10 +46,35 @@ public class FamilyActivity extends AppCompatActivity {
         }
     };
 
+    /*
+     * This listener gets triggered whenever the audio focus changes
+     * (i.e., we gain or lose audio focus because of another app or device).
+     */
+    AudioManager.OnAudioFocusChangeListener onAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+        @Override
+        public void onAudioFocusChange(int focusChange) {
+            if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT ||
+                    focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
+                // Pause playback
+                mediaPlayer.pause();
+                mediaPlayer.seekTo(0);
+            } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                // Resume playback
+                mediaPlayer.start();
+            } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                // Stop playback
+                releaseMediaPlayer();
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_list_layout);
+
+        // Setup the AudioManger to request audio focus
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         // An ArrayList of words
         final ArrayList<Word> words = new ArrayList<Word>();
@@ -81,16 +113,32 @@ public class FamilyActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Word word = words.get(position);
-
                 // Release any MediaPlayer resources before initializing new audio
                 releaseMediaPlayer();
 
-                mediaPlayer = MediaPlayer.create(FamilyActivity.this, word.getAudioResId());
-                mediaPlayer.start();
+                // Get the Word object at the given position the user clicked on
+                Word word = words.get(position);
 
-                // Set listener on MediaPlayer so that we can close it when sound has finished playing
-                mediaPlayer.setOnCompletionListener(completionListener);
+                /* Request audio focus for playback
+                 * requestAudioFocus(AudioManager.OnAudioFocusChangeListener l, int streamType, int durationHint)
+                 */
+                int result = audioManager.requestAudioFocus(onAudioFocusChangeListener,
+                        // Use the music stream.
+                        AudioManager.STREAM_MUSIC,
+                        // Request temporary  focus.
+                        AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
+
+                if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                    // Start playback.
+                    // Create and setup the MediaPlayer for the audio resource associated
+                    // with the current word
+                    mediaPlayer = MediaPlayer.create(FamilyActivity.this, word.getAudioResId());
+                    mediaPlayer.start();
+
+                    // Set listener on MediaPlayer so that we can close it when sound has finished playing
+                    mediaPlayer.setOnCompletionListener(completionListener);
+                }
+
             }
         });
     }
@@ -118,6 +166,9 @@ public class FamilyActivity extends AppCompatActivity {
             // setting the media player to null is an easy way to tell that the media player
             // is not configured to play an audio file at the moment.
             mediaPlayer = null;
+
+            // Abandon audio focus when playback complete
+            audioManager.abandonAudioFocus(onAudioFocusChangeListener);
         }
     }
 }
