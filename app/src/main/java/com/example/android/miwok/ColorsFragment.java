@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NumbersFragment extends Fragment {
+public class ColorsFragment extends Fragment {
 
     /*
      * @param mediaPlayer Create a MediaPlayer object
@@ -26,18 +26,16 @@ public class NumbersFragment extends Fragment {
     private MediaPlayer mediaPlayer;
     private AudioManager audioManager;
 
-
-    public NumbersFragment() {
+    public ColorsFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // .inflate(int resource, ViewGroup root, boolean attachToRoot)
         View rootView = inflater.inflate(R.layout.word_list_layout, container, false);
 
-        /* Insert all the code from the NumberActivity’s onCreate() method after the setContentView method call */
+        /* Insert all the code from the ColorsActivity’s onCreate() method after the setContentView method call */
 
         // Setup the AudioManger to request audio focus
         audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
@@ -46,23 +44,21 @@ public class NumbersFragment extends Fragment {
         final ArrayList<Word> words = new ArrayList<Word>();
 
         // Add Strings element to words ArrayList
-        words.add(new Word("one", "lutti", R.drawable.number_one, R.raw.number_one));
-        words.add(new Word("two","otiiko", R.drawable.number_two, R.raw.number_two));
-        words.add(new Word("three","tolookosu", R.drawable.number_three, R.raw.number_three));
-        words.add(new Word("four","oyyisa", R.drawable.number_four, R.raw.number_four));
-        words.add(new Word("five","massokka", R.drawable.number_five, R.raw.number_five));
-        words.add(new Word("six","temmokka", R.drawable.number_six, R.raw.number_six));
-        words.add(new Word("seven","kenekaku", R.drawable.number_seven, R.raw.number_seven));
-        words.add(new Word("eight","kawinta", R.drawable.number_eight, R.raw.number_eight));
-        words.add(new Word("nine","wo'e", R.drawable.number_nine, R.raw.number_nine));
-        words.add(new Word("ten","na'aacha", R.drawable.number_ten, R.raw.number_ten));
+        words.add(new Word("red", "weṭeṭṭi", R.drawable.color_red, R.raw.color_red));
+        words.add(new Word("green","chokokki", R.drawable.color_green, R.raw.color_green));
+        words.add(new Word("brown","ṭakaakki", R.drawable.color_brown, R.raw.color_brown));
+        words.add(new Word("gray","ṭopoppi", R.drawable.color_gray, R.raw.color_gray));
+        words.add(new Word("black","kululli", R.drawable.color_black, R.raw.color_black));
+        words.add(new Word("white","kelelli", R.drawable.color_white, R.raw.color_white));
+        words.add(new Word("dusty yellow","ṭopiisә", R.drawable.color_dusty_yellow, R.raw.color_dusty_yellow));
+        words.add(new Word("mustand yellow","chiwiiṭә", R.drawable.color_mustard_yellow, R.raw.color_mustard_yellow));
 
         // An ArrayAdapter whose data source is a list of Strings. The
         // adapter knows how to create layouts for each item in the list, using the
         // simple_list_item_1.xml layout resource defined in the Android framework.
         // This list item layout contains a single TextView, which the adapter will set to
         // display a single word.
-        WordAdapter adapter = new WordAdapter(getActivity(), words, R.color.category_numbers);
+        WordAdapter adapter = new WordAdapter(getActivity(), words, R.color.category_colors);
 
         // Find the ListView object in the view hierarchy of the Activity.
         // There should be a ListView with the view ID called list, which is declared in the
@@ -104,6 +100,7 @@ public class NumbersFragment extends Fragment {
                     // Set listener on MediaPlayer so that we can close it when sound has finished playing
                     mediaPlayer.setOnCompletionListener(completionListener);
                 }
+
             }
         });
 
@@ -115,6 +112,7 @@ public class NumbersFragment extends Fragment {
      * (i.e., we gain or lose audio focus because of another app or device).
      */
     private AudioManager.OnAudioFocusChangeListener onAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+        @Override
         public void onAudioFocusChange(int focusChange) {
             if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT ||
                     focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
@@ -131,11 +129,9 @@ public class NumbersFragment extends Fragment {
         }
     };
 
-    /*
-     * Create OnCompletionListener object that can be used throughout
-     * This listener is triggered when MediaPlayer has completed playing a song
-     * If triggered, will release the MediaPlayer resource
-     */
+    // Create OnCompletionListener object that can be used throughout
+    // This listener is triggered when MediaPlayer has completed playing a song
+    // If triggered, will release the MediaPlayer resource
     private MediaPlayer.OnCompletionListener completionListener = new MediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
@@ -171,5 +167,4 @@ public class NumbersFragment extends Fragment {
             audioManager.abandonAudioFocus(onAudioFocusChangeListener);
         }
     }
-
 }
