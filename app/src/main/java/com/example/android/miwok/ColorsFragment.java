@@ -35,8 +35,6 @@ public class ColorsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.word_list_layout, container, false);
 
-        /* Insert all the code from the ColorsActivity’s onCreate() method after the setContentView method call */
-
         // Setup the AudioManger to request audio focus
         audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
 
